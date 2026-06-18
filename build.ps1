@@ -30,12 +30,13 @@ foreach ($file in $files) {
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($originalCode)
     $base64String = [System.Convert]::ToBase64String($bytes)
 
-    # 3. Create the secure wrapper
-    $wrapperCode = "[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('$base64String')) | Invoke-Expression"
+    # 3. Create the secure wrapper (assign to variable first to prevent parser confusion)
+    $wrapperCode = "`$b64 = '$base64String'; [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String(`$b64)) | Invoke-Expression"
 
-    # 4. Save the wrapper script to the destination directory
+    # 4. Save the wrapper script to the destination directory (without BOM to prevent parser issues)
     $destPath = Join-Path $destDir $file.Name
-    [System.IO.File]::WriteAllText($destPath, $wrapperCode, [System.Text.Encoding]::UTF8)
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($destPath, $wrapperCode, $utf8NoBom)
 
     Write-Host "Successfully generated secure wrapper at '$destPath'" -ForegroundColor Green
 }

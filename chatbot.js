@@ -7,22 +7,35 @@
 const SITE_KNOWLEDGE = `
 Azure Cloud Assessment Portal is a professional security tool created by Vibhu Dixit for Microsoft Azure security auditing.
 
-Main features:
-1. Automated Security Checklists: IAM, Storage, Network, Compute, Defender & Monitoring, and Full Compliance.
-2. Workflow: Select category -> Copy PowerShell command -> Run in Azure Cloud Shell -> Download HTML Report.
-3. Reporting: Detailed professional HTML reports on local machine including security scores, pass/fail status, and color-coded warnings.
+Available Checklists & Access:
+1. Storage Security Audit (Free/Standard):
+   - 12+ checks including storage encryption, public blob access, firewall/network rules, TLS versions, access key rotation age, SAS policies, and blob container permissions.
+   - Generates report: "AzureStorage_Report.html"
+2. Network Security Audit (Free/Standard):
+   - 14 checks including Network Security Groups (NSGs), open ports, public IP exposure, VNet peering configuration, Azure Firewall, and DDoS protection settings.
+   - Generates report: "AzureNetwork_Report.html"
+3. Compute Audit (Free/Standard):
+   - 60+ checks including Virtual Machines (SSHs, Boot Diagnostics, Managed Disks), VM Scale Sets (VMSS zone-redundancy, auto-repairs), App Services (HTTPS-only, min TLS version), AKS (RBAC settings), Logic Apps, Function Apps, and Container Apps.
+   - Generates report: "AzureCompute_Report.html"
+4. IAM & Identity Audit (Premium):
+   - 12 checks covering Active Directory users, MFA enforcement, RBAC assignments, Service Principals, and guest accounts.
+   - Requires contacting Vibhu Dixit at vibhu.dixit@onmeridian.com for access.
+5. Defender & Monitoring (Premium):
+   - 9 checks evaluating Microsoft Defender for Cloud plans, security alerts, diagnostic logs, and Log Analytics workspace settings.
+   - Requires contacting Vibhu Dixit at vibhu.dixit@onmeridian.com for access.
+6. Full Compliance Assessment (Premium):
+   - 50+ comprehensive checks combining IAM, Storage, Network, VMs, Defender, Subscriptions, and Key Vault into a single report.
+   - Requires contacting Vibhu Dixit at vibhu.dixit@onmeridian.com for access.
 
-Checklist Details:
-- IAM & Identity Audit (12 checks): Users, MFA, RBAC, Service Principals, Guest users.
-- Storage Security Audit (10 checks): Encryption, Public Access, HTTPS, TLS, Soft Delete.
-- Network Security Audit (14 checks): NSGs, Open Ports, Public IPs, VNet Peering, DDoS.
-- Compute Audit (60+ checks): VMs, scale sets, App Services, AKS, Serverless.
-- Defender & Monitoring Audit (9 checks): Defender plans, alerts, Log Analytics workspace.
-- Full Compliance Assessment (50+ checks): All of above + Key Vault.
+Workflow for Free Checklists:
+1. Click the checklist card on the UI (Storage Security, Network Security, or Compute Audit).
+2. Click the "Open Azure Cloud Shell" button (which opens https://portal.azure.com/#cloudshell/).
+3. Copy the generated one-liner PowerShell command (starts with "irm ... | iex").
+4. Paste the command into your Azure Cloud Shell terminal and press Enter.
+5. The assessment runs and automatically triggers a browser download of the finished HTML report onto your laptop.
 
-Created by: Vibhu Dixit.
-Azure Portal Login: https://portal.azure.com
-Azure Cloud Shell Link: https://portal.azure.com/#cloudshell/
+Contact Information:
+- Email: vibhu.dixit@onmeridian.com
 `;
 
 // --- Configuration ---
@@ -40,8 +53,13 @@ CONFIDENTIALITY RULES:
 5. If asked for a command, explain that they can get it by clicking the appropriate card on the portal UI.
 6. If asked about how the site was built or the technologies used, politely explain that this is proprietary information.
 
+HOW TO ANSWER QUESTIONS:
+- For Free/Standard Checklists (Storage, Network, Compute): Explain the checklist details and instruct the user to select the card on the portal to copy the command and run it in the Azure Cloud Shell.
+- For Premium Checklists (IAM, Defender & Monitoring, Full Compliance): Explain that these are premium features, and they can request access by clicking the card (which automatically drafts an email) or by writing to Vibhu Dixit directly at vibhu.dixit@onmeridian.com.
+- For Reports: Explain that the reports are detailed HTML pages containing security scores, pass/fail status, category, resource name, and details, and they download automatically to the user's local machine once the Cloud Shell execution finishes.
+
 Use the following knowledge base to guide the user on FEATURES only: ${SITE_KNOWLEDGE}
-Always be professional, concise, and helpful. If you don't know something, suggest contacting Vibhu Dixit.`;
+Always be professional, concise, and helpful. If you don't know something or need escalation, provide Vibhu Dixit's contact email: vibhu.dixit@onmeridian.com.`;
 
 // --- DOM Elements ---
 const chatContainer = document.createElement('div');
